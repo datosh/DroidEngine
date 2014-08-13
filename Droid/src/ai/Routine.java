@@ -4,7 +4,6 @@ import util.Board;
 import entities.Droid;
 
 public abstract class Routine {
-	
 	public enum RoutineState {
 		SUCCESS, 
 		FAILURE,

@@ -29,6 +29,7 @@ public class TestGame extends Game {
 		droid = new Droid("MyDroid", new Point(250, 150), 10, 1, 2);
 		board.addDroid(droid);
 		
+		
 		moveTo = new MoveTo(340, 260);
 		wander = new Wander(board);
 		

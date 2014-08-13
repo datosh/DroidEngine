@@ -7,6 +7,7 @@ public class MoveTo extends Routine {
 	final protected double destX;
 	final protected double destY;
 	
+	
 	public MoveTo(double destX, double destY) {
 		super();
 		this.destX = destX;

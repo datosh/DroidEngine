@@ -6,7 +6,6 @@ import entities.Droid;
 import util.Board;
 
 public class Wander extends Routine {
-	
 	private static Random random = new Random();
 	
 	private final Board board;

@@ -6,6 +6,7 @@ import java.util.List;
 import entities.Droid;
 
 public class Board {
+	
 	final double width;
 	final double height;
 	

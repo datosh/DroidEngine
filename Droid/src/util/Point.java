@@ -22,6 +22,7 @@ public class Point {
 		this.y = point.getY();
 	}
 	
+	
 	/* 
 	 * GETTER
 	 */

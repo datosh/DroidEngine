@@ -17,6 +17,7 @@ public class Droid {
 	private Board board;
 	private Routine routine;
 	
+	
 	/*
 	 * CONSTRUCTOR
 	 */

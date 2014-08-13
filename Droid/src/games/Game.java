@@ -119,6 +119,7 @@ public abstract class Game extends Canvas implements Runnable {
 				return;
 			}
 			
+			
 			//If one second has passed print benchmarks and reset counter
 			if(System.currentTimeMillis() - lastFullSecond >= 1000) {
 				lastFullSecond += 1000;
