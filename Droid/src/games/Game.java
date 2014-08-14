@@ -1,5 +1,7 @@
 package games;
 
+import input.InputHandler;
+
 import java.awt.BorderLayout;
 import java.awt.Canvas;
 import java.awt.Color;
@@ -21,7 +23,8 @@ public abstract class Game extends Canvas implements Runnable {
 	public static final long SLEEP_TIME = 3;
 	public static final double NS_PER_RENDER = 1_000_000_000D / MAX_FPS;
 	public static final Color defaultBGColor = new Color(255, 255, 255);
-
+	public static final InputHandler INPUT = new InputHandler();
+	
 	private JFrame frame;
 
 	protected String name;
@@ -31,6 +34,8 @@ public abstract class Game extends Canvas implements Runnable {
 		this.setMinimumSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
 		this.setMaximumSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
 		this.setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
+		
+		this.addKeyListener(INPUT);
 		
 		this.name = name;
 		frame = new JFrame(name);
@@ -45,6 +50,8 @@ public abstract class Game extends Canvas implements Runnable {
 		frame.setResizable(false);
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
+		
+		
 	}
 	
 	/**
