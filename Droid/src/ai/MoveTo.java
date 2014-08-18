@@ -1,17 +1,29 @@
 package ai;
 
 import util.Board;
+import util.Tile;
 import entities.Droid;
 
+/**
+ * Moves to the specified location in a straight line. 
+ * @author datosh
+ *
+ */
 public class MoveTo extends Routine {
 	final protected double destX;
 	final protected double destY;
-	
-	
+	final protected int destXTile;
+	final protected int destYTile;
+
 	public MoveTo(double destX, double destY) {
 		super();
 		this.destX = destX;
 		this.destY = destY;
+		destXTile = (int)(destX / Tile.TILE_WIDTH);
+		destYTile = (int)(destY / Tile.TILE_HEIGHT);
+		
+		System.out.println("MoveTo: x=" + destX + ",y=" + destY);
+
 	}
 	
 	public void reset() {

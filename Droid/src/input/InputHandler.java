@@ -2,12 +2,19 @@ package input;
 
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 
-public class InputHandler implements KeyListener {
+import util.Point;
+
+public class InputHandler implements KeyListener, MouseListener {
 	public boolean _Q, _W, _E, _R, _T, _Z, _U, _I, _O, _P;
 	public boolean _A, _S, _D, _F, _G, _H, _J, _K, _L;
 	public boolean _Y, _X, _C, _V, _B, _N, _M; 
 	public boolean _SHIFT, _ALT, _CTRL, _TAB;
+	
+	private boolean mouseHandeled = true;
+	private int mouseX, mouseY;
 	
 	
 	@Override
@@ -217,6 +224,49 @@ public class InputHandler implements KeyListener {
 	@Override
 	public void keyTyped(KeyEvent e) {
 		//NOT USED
+	}
+
+	@Override
+	public void mouseClicked(MouseEvent e) {
+		// TODO Auto-generated method stub
+	}
+	
+	public Point getClick() {
+		if(mouseHandeled) {
+			return null;
+		} else {
+			mouseHandeled = true;
+			return new Point((double)mouseX, (double)mouseY);
+		}
+		
+	}
+
+	@Override
+	public void mouseEntered(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mouseExited(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void mousePressed(MouseEvent e) {
+		// TODO Auto-generated method stub
+		if(mouseHandeled){
+			mouseX = e.getX();
+			mouseY = e.getY();
+			mouseHandeled = false;
+		}
+	}
+
+	@Override
+	public void mouseReleased(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

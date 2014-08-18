@@ -16,9 +16,9 @@ public abstract class Game extends Canvas implements Runnable {
 
 	protected final boolean DEBUG = true;
 	
-	public static final int WIDTH = 160;
+	public static final int WIDTH = 512;
 	public static final int HEIGHT = WIDTH / 16 * 9;
-	public static final int SCALE = 3;
+	public static final int SCALE = 1;
 	public static final int MAX_FPS = 40;
 	public static final long SLEEP_TIME = 3;
 	public static final double NS_PER_RENDER = 1_000_000_000D / MAX_FPS;
@@ -36,6 +36,7 @@ public abstract class Game extends Canvas implements Runnable {
 		this.setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
 		
 		this.addKeyListener(INPUT);
+		this.addMouseListener(INPUT);
 		
 		this.name = name;
 		frame = new JFrame(name);
@@ -130,7 +131,7 @@ public abstract class Game extends Canvas implements Runnable {
 			//If one second has passed print benchmarks and reset counter
 			if(System.currentTimeMillis() - lastFullSecond >= 1000) {
 				lastFullSecond += 1000;
-				System.out.println(ticks + " ticks, " + frames + " frames");
+				frame.setTitle(name + " " + ticks + " ticks, " + frames + " frames");
 				ticks = 0;
 				frames = 0;
 			}

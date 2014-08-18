@@ -3,6 +3,14 @@ package ai;
 import util.Board;
 import entities.Droid;
 
+/**
+ * Baisc class for all Routines (AI). We have three states SUCCESS, FAILURE and RUNNING. 
+ * The start method sets the state to running. The reset and act method have to be implemented
+ * by each SubRoutine seperately. 
+ * 
+ * @author datosh
+ *
+ */
 public abstract class Routine {
 	public enum RoutineState {
 		SUCCESS, 

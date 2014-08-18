@@ -4,7 +4,14 @@ import java.util.Random;
 
 import entities.Droid;
 import util.Board;
+import util.Tile;
 
+/**
+ * Picks a random location on the board and calles the MoveTo Routine to get there.
+ * 
+ * @author datosh
+ *
+ */
 public class Wander extends Routine {
 	private static Random random = new Random();
 	
@@ -14,7 +21,11 @@ public class Wander extends Routine {
 	public Wander(Board board) {
 		super();
 		this.board = board;
-		this.moveTo = new MoveTo(random.nextDouble() * board.getWidth(), random.nextDouble() * board.getHeight());
+		int x = (int)(random.nextDouble() * board.getWidth());
+		x = (x - x % Tile.TILE_WIDTH);
+		int y = (int)(random.nextDouble() * board.getHeight());
+		y = (y - y % Tile.TILE_HEIGHT);
+		this.moveTo = new MoveTo(x, y);
 	}
 
 	@Override
@@ -25,7 +36,11 @@ public class Wander extends Routine {
 	
 	@Override
 	public void reset() {
-		this.moveTo = new MoveTo(random.nextDouble() * board.getWidth(), random.nextDouble() * board.getHeight());
+		int x = (int)(random.nextDouble() * board.getWidth());
+		x = (x - x % Tile.TILE_WIDTH);
+		int y = (int)(random.nextDouble() * board.getHeight());
+		y = (y - y % Tile.TILE_HEIGHT);
+		this.moveTo = new MoveTo(x, y);
 	}
 	
 	@Override

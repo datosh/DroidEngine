@@ -28,7 +28,7 @@ public class Droid {
 		this.range = range;
 		this.damage = damage;
 		this.health = health;
-		this.speed = 150;
+		this.speed = 50;
 	}
 
 	/*
@@ -118,9 +118,11 @@ public class Droid {
 	}
 	
 	public void update(long delta) {
-		if(routine.getState() == null) {
-			routine.start();
+		if(routine != null) {
+			if(routine.getState() == null) {
+				routine.start();
+			}
+			routine.act(delta, this, board);
 		}
-		routine.act(delta, this, board);
 	}
 }
