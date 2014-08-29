@@ -2,7 +2,6 @@ package games;
 
 import input.InputHandler;
 
-import java.awt.BorderLayout;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -14,26 +13,39 @@ import javax.swing.JFrame;
 public abstract class Game extends Canvas implements Runnable {
 	private static final long serialVersionUID = -5926662799507913257L;
 
-	protected final boolean DEBUG = true;
+	public final static boolean DEBUG = true;
 	
-	public static final int WIDTH = 512;
-	public static final int HEIGHT = WIDTH / 16 * 9;
-	public static final int SCALE = 1;
-	public static final int MAX_FPS = 40;
-	public static final long SLEEP_TIME = 3;
-	public static final double NS_PER_RENDER = 1_000_000_000D / MAX_FPS;
-	public static final Color defaultBGColor = new Color(255, 255, 255);
 	public static final InputHandler INPUT = new InputHandler();
+	public enum STATE {
+		RUNNING, GAMEOVER
+	}
 	
-	private JFrame frame;
-
 	protected String name;
-	protected boolean running = false;
+	protected STATE state;
+	
+	/* VARS FOR FRAME RATE */
+	private final int MAX_FPS = 60;
+	private final long SLEEP_TIME = 3;
+	private final double NS_PER_RENDER = 1_000_000_000D / MAX_FPS;
+	private final Color defaultBGColor = new Color(255, 255, 255);
+	
+	private boolean running = false;
+	private JFrame frame;
 	
 	public Game(String name) {
-		this.setMinimumSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
-		this.setMaximumSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
-		this.setPreferredSize(new Dimension(WIDTH * SCALE, HEIGHT * SCALE));
+		this(name, 512);
+	}
+	
+	public Game(String name, int width) {
+		int height = width / 16 * 9;
+		
+		Dimension size = new Dimension(width, height);
+		this.setMinimumSize(size);
+		this.setMaximumSize(size);
+		this.setPreferredSize(size);
+		
+		this.setBackground(defaultBGColor);
+		this.setIgnoreRepaint(true);
 		
 		this.addKeyListener(INPUT);
 		this.addMouseListener(INPUT);
@@ -42,17 +54,24 @@ public abstract class Game extends Canvas implements Runnable {
 		frame = new JFrame(name);
 		
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setLayout(new BorderLayout());	//TODO: REALLY NEEDED?
-		frame.setBackground(defaultBGColor);
 		
-		frame.add(this, BorderLayout.CENTER);
+		frame.add(this);
 		frame.pack();
 		
 		frame.setResizable(false);
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 		
-		
+		//Input will instantly go to us
+		this.requestFocus();
+	}
+	
+	public boolean isRunning() {
+		return running;
+	}
+	
+	public STATE getState() {
+		return state;
 	}
 	
 	/**
@@ -65,6 +84,7 @@ public abstract class Game extends Canvas implements Runnable {
 	 */
 	public void start() {
 		running = true;
+		state = STATE.RUNNING;
 		new Thread(this).start();
 	}
 	
@@ -100,7 +120,7 @@ public abstract class Game extends Canvas implements Runnable {
 
 			//Update the state of the game
 			ticks++;
-			tick(deltaTick / 1000);
+			tick(deltaTick / 1000);	//Pass delta as µs
 			
 			//As long as frames are need to be drawn, draw them
 			while(delta >= 1) {
@@ -142,7 +162,7 @@ public abstract class Game extends Canvas implements Runnable {
 	
 	/**
 	 * Update the state of the game
-	 * @param delta time in ms since last call
+	 * @param delta time in µs since last call
 	 */
 	public abstract void tick(long delta);
 	

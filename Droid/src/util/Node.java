@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Polygon;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 
 public class Node {
@@ -15,8 +16,7 @@ public class Node {
 	private Point centroid; //schwerpunkt
 	int[] xpoints, ypoints;
 	//It's neighbours
-	private Node[] neighbours;
-	private int[] costs;
+	private List<Edge> neighbours;
 	//Some other values
 	private Color centroidColor = Color.RED;
 	private Node previous; //Needed for pathfinding
@@ -45,8 +45,7 @@ public class Node {
 		centroid = new Point(cx, cy);
 		
 		//Make room for neighbours
-		neighbours = new Node[3];
-		costs = new int[3];
+		neighbours = new ArrayList<Edge>();
 		
 		//Store and increment ID
 		id = ID_COUNTER;
@@ -72,8 +71,7 @@ public class Node {
 		centroid = new Point(cx, cy);
 
 		//Make room for neighbours
-		neighbours = new Node[3];
-		costs = new int[3];
+		neighbours = new ArrayList<Edge>();
 		
 		//Store and increment ID
 		id = ID_COUNTER;
@@ -84,15 +82,11 @@ public class Node {
 	 * GETTER & SETTER
 	 */
 	
-	public void setCosts(int[] costs) {
-		this.costs = costs;
-	}
-	
 	public void setCentroidColor(Color color) {
 		this.centroidColor = color;
 	}
 	
-	public Node[] getNeighbours() {
+	public List<Edge> getNeighbours() {
 		return neighbours;
 	}
 	
@@ -126,34 +120,30 @@ public class Node {
 	 * OTHER METHODS
 	 */
 	
+	public void setNeighbour(Node neighbour) {
+		setNeighbour(neighbour, Edge.STANDARD_COSTS);
+	}
+	
 	/**
 	 * Sets a new neighbour. Checks if nodes are already neighbours and if there is still room for
 	 * more neighbours. 
 	 * 
 	 * @param neighbour
 	 */
-	public void setNeighbour(Node neighbour) {
+	public void setNeighbour(Node neighbour, int costs) {
 		//Check if the nodes arent already neighbours break!
-		for(int i = 0; i < 3; i++) {
-			if(neighbours[0] != null) {
-				if(neighbours[0] == neighbour) {
+		Iterator<Edge> it = neighbours.iterator();
+		while(it.hasNext()) {
+			Edge edge = it.next();
+			if(edge != null) {
+				if(edge.areNeighbours(neighbour)) {
 					System.err.println("ERROR: " + neighbour + " and " + this + " are already connected!");
 					return;
 				}
 			}
 		}
 		
-		//Place new neighbour in one free slot
-		if(neighbours[0] == null) {
-			neighbours[0] = neighbour;
-		} else if(neighbours[1] == null) {
-			neighbours[1] = neighbour;
-		} else if(neighbours[2] == null) {
-			neighbours[2] = neighbour;
-		} else {
-			//If all slots are already filled up print error message
-			System.err.println("ERROR: All neightbours already filled!");
-		}
+		neighbours.add(new Edge(neighbour, costs));
 	}
 	
 	public void draw(Graphics g) {
@@ -164,13 +154,13 @@ public class Node {
 		g.fillOval((int)centroid.getX(), (int)centroid.getY(), 2, 2);
 		
 		g.setColor(Color.BLUE);
-		for(int i = 0; i < 3; i++) {
-			if(neighbours[i] != null) {
-				g.drawLine((int)centroid.getX(), (int)centroid.getY(), (int)neighbours[i].getCentroid().getX(), (int)neighbours[i].getCentroid().getY());
-			}
+		Iterator<Edge> it = neighbours.iterator();
+		while(it.hasNext()) {
+			Point otherCentroid = it.next().getNode().getCentroid();
+			g.drawLine((int)centroid.getX(), (int)centroid.getY(), (int)otherCentroid.getX(), (int)otherCentroid.getY());
 		}
 		
-		g.setColor(Color.BLACK);
+		g.setColor(Color.YELLOW);
 		char[] chars = ("" + id).toCharArray();
 		g.drawChars(chars, 0, chars.length, (int)centroid.getX()-10, (int)centroid.getY()-10);
 	}
@@ -211,13 +201,14 @@ public class Node {
 			explored.add(node);
 			
 			//Add neighbours
-			Node[] neighbours = node.getNeighbours();
-			for(int i = 0; i < 3; i++) {
-				if(neighbours[0] != null) {
-					if(!explored.contains(neighbours[0])) {
-						if(!reachable.contains(neighbours[0])) {
-							neighbours[0].previous = node;
-							reachable.add(neighbours[0]);
+			Iterator<Edge> it = node.getNeighbours().iterator();
+			while(it.hasNext()) {
+				Node nextNeighbour = it.next().getNode();
+				if(nextNeighbour != null) {
+					if(!explored.contains(nextNeighbour)) {
+						if(!reachable.contains(nextNeighbour)) {
+							nextNeighbour.setPrevious(node);
+							reachable.add(nextNeighbour);
 						}
 					}
 				}
@@ -225,7 +216,7 @@ public class Node {
 		}
 		return null;
 	}
-	
+	//Build the path for the pathfinding algorithm. 
 	private static List<Node> buildPath(Node toNode) {
 		List<Node> path = new ArrayList<Node>();
 		while(toNode != null) {
@@ -233,5 +224,26 @@ public class Node {
 			toNode = toNode.previous;
 		}
 		return path;
+	}
+	
+	/**
+	 * Connects both Nodes and sets the Costs of the Edge to costs
+	 * @param a The one Node
+	 * @param b The other Node
+	 * @param costs The costs to traversal that edge
+	 */
+	public static void connectUni(Node a, Node b, int costs) {
+		a.setNeighbour(b, costs);
+		b.setNeighbour(a, costs);
+	}
+	
+	/**
+	 * Connects both Nodes and sets the Costs to STANDARD_COSTS
+	 * @param a The one Node
+	 * @param b The other Node
+	 */
+	public static void connectUni(Node a, Node b) {
+		a.setNeighbour(b);
+		b.setNeighbour(a);
 	}
 }

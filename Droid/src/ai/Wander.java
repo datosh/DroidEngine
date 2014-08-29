@@ -3,7 +3,9 @@ package ai;
 import java.util.Random;
 
 import entities.Droid;
+import entities.GameObject;
 import util.Board;
+import util.Point;
 import util.Tile;
 
 /**
@@ -15,15 +17,16 @@ import util.Tile;
 public class Wander extends Routine {
 	private static Random random = new Random();
 	
-	private final Board board;
+	private Point min, max;
 	private MoveTo moveTo;
 	
-	public Wander(Board board) {
+	public Wander(Point min, Point max) {
 		super();
-		this.board = board;
-		int x = (int)(random.nextDouble() * board.getWidth());
+		this.min = min;
+		this.max = max;
+		int x = (int)(random.nextDouble() * max.getX());
 		x = (x - x % Tile.TILE_WIDTH);
-		int y = (int)(random.nextDouble() * board.getHeight());
+		int y = (int)(random.nextDouble() * max.getY());
 		y = (y - y % Tile.TILE_HEIGHT);
 		this.moveTo = new MoveTo(x, y);
 	}
@@ -36,19 +39,19 @@ public class Wander extends Routine {
 	
 	@Override
 	public void reset() {
-		int x = (int)(random.nextDouble() * board.getWidth());
+		int x = (int)(random.nextDouble() * max.getX());
 		x = (x - x % Tile.TILE_WIDTH);
-		int y = (int)(random.nextDouble() * board.getHeight());
+		int y = (int)(random.nextDouble() * max.getY());
 		y = (y - y % Tile.TILE_HEIGHT);
 		this.moveTo = new MoveTo(x, y);
 	}
 	
 	@Override
-	public void act(long delta, Droid droid, Board board) {
+	public void act(long delta, GameObject gameObject) {
 		if(!moveTo.isRunning()) {
 			return;
 		}
-		this.moveTo.act(delta, droid, board);
+		this.moveTo.act(delta, gameObject);
 		if(this.moveTo.isSuccess()) {
 			succeed();
 		} else if(this.moveTo.isFailure()) {

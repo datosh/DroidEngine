@@ -122,7 +122,7 @@ public class Droid {
 			if(routine.getState() == null) {
 				routine.start();
 			}
-			routine.act(delta, this, board);
+			//routine.act(delta, this, board);
 		}
 	}
 }

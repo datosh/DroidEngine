@@ -2,6 +2,7 @@ package ai;
 
 import util.Board;
 import entities.Droid;
+import entities.GameObject;
 
 /**
  * Baisc class for all Routines (AI). We have three states SUCCESS, FAILURE and RUNNING. 
@@ -31,7 +32,7 @@ public abstract class Routine {
 	
 	public abstract void reset();
 	
-	public abstract void act(long delta, Droid droid, Board board);
+	public abstract void act(long delta, GameObject gameObject);
 	
 	protected void succeed() {
 		System.out.println("Routine: " + this.getClass().getSimpleName() + " SUCCEEDED!");

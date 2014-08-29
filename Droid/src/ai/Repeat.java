@@ -2,6 +2,7 @@ package ai;
 
 import util.Board;
 import entities.Droid;
+import entities.GameObject;
 
 /**
  * Repeats the passed routines times-times. If no amount
@@ -45,7 +46,7 @@ public class Repeat extends Routine {
 	}
 	
 	@Override
-	public void act(long delta,Droid droid, Board board) {
+	public void act(long delta, GameObject gameObject) {
 		if(routine.isFailure()) {
 			fail();
 		} else if(routine.isSuccess()) {
@@ -60,7 +61,7 @@ public class Repeat extends Routine {
 			}
 		}
 		if(routine.isRunning()) {
-			routine.act(delta, droid, board);
+			routine.act(delta, gameObject);
 		}
 	}
 }

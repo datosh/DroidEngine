@@ -1,8 +1,6 @@
 package ai;
 
-import util.Board;
-import util.Tile;
-import entities.Droid;
+import entities.GameObject;
 
 /**
  * Moves to the specified location in a straight line. 
@@ -12,15 +10,11 @@ import entities.Droid;
 public class MoveTo extends Routine {
 	final protected double destX;
 	final protected double destY;
-	final protected int destXTile;
-	final protected int destYTile;
 
 	public MoveTo(double destX, double destY) {
 		super();
 		this.destX = destX;
 		this.destY = destY;
-		destXTile = (int)(destX / Tile.TILE_WIDTH);
-		destYTile = (int)(destY / Tile.TILE_HEIGHT);
 		
 		System.out.println("MoveTo: x=" + destX + ",y=" + destY);
 
@@ -31,46 +25,47 @@ public class MoveTo extends Routine {
 	}
 	
 	@Override
-	public void act(long delta, Droid droid, Board board) {
+	public void act(long delta, GameObject gameObject) {
 		if(isRunning()) {
-			if(!droid.isAlive()) {
+			if(!gameObject.isAlive()) {
 				fail();
 				return;
 			}
-			if(!isDroidAtDestination(droid)) {
-				moveDroid(delta, droid);
+			if(!isDroidAtDestination(gameObject)) {
+				moveDroid(delta, gameObject);
 			}
 		}
 	}
 	
-	private void moveDroid(long delta, Droid droid) {
-		if(destX != droid.getX()) {
-			if(Math.abs(destX - droid.getX()) < (droid.getSpeed() * delta / 1_000_000)) {
-				droid.setX(destX);
-			} else if(destX > droid.getX()) {
-				droid.setX(droid.getX() + (droid.getSpeed() * delta / 1_000_000));
+	private void moveDroid(long delta, GameObject gameObject) {
+		int speed = gameObject.getRigidbody().getSpeed();
+		if(destX != gameObject.getX()) {
+			if(Math.abs(destX - gameObject.getX()) < (speed * (double)delta / 1_000_000)) {
+				gameObject.setX(destX);
+			} else if(destX > gameObject.getX()) {
+				gameObject.setX(gameObject.getX() + (speed * (double)delta / 1_000_000));
 			} else {
-				droid.setX(droid.getX() - (droid.getSpeed() * delta / 1_000_000));
+				gameObject.setX(gameObject.getX() - (speed * (double)delta / 1_000_000));
 			}
 		}
 		
-		if(destY != droid.getY()) {
-			if(Math.abs(destY - droid.getY()) < (droid.getSpeed() * delta / 1_000_000)) {
-				droid.setY(destY);
-			} else if(destY > droid.getY()) {
-				droid.setY(droid.getY() + (droid.getSpeed() * delta / 1_000_000));
+		if(destY != gameObject.getY()) {
+			if(Math.abs(destY - gameObject.getY()) < (speed * (double)delta / 1_000_000)) {
+				gameObject.setY(destY);
+			} else if(destY > gameObject.getY()) {
+				gameObject.setY(gameObject.getY() + (speed * (double)delta / 1_000_000));
 			} else {
-				droid.setY(droid.getY() - (droid.getSpeed() * delta / 1_000_000));
+				gameObject.setY(gameObject.getY() - (speed * (double)delta / 1_000_000));
 			}
 		}
 		
-		if(isDroidAtDestination(droid)) {
+		if(isDroidAtDestination(gameObject)) {
 			succeed();
 		}
 	}
 	
-	private boolean isDroidAtDestination(Droid droid) {
-		return destX == droid.getX() && destY == droid.getY();
+	private boolean isDroidAtDestination(GameObject gameobject) {
+		return destX == gameobject.getX() && destY == gameobject.getY();
 	}
 	
 

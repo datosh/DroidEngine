@@ -35,7 +35,7 @@ public class TestGame extends Game {
 	@Override
 	public void init() {
 		//Initialize Board and set some tiles to be not walkable
-		board = new Board(WIDTH, HEIGHT);
+		board = new Board(this.getWidth(), this.getHeight());
 		board.getTiles()[board.numTilesH][board.numTilesV].toggleWalkable();
 		
 		//Create a new Droid and add it to the board
@@ -49,9 +49,6 @@ public class TestGame extends Game {
 		nn = null;
 		initialNodeDone = false;
 		
-		moveTo = new MoveTo(512, 288);
-		wander = new Wander(board);
-		repeat = new Repeat(wander);
 		
 		droid.setRoutine(repeat);
 	}
@@ -132,6 +129,7 @@ public class TestGame extends Game {
 				}
 			}
 			
+			//Set the currently selected and the clicked node as neighbours
 			if(INPUT._ALT) {
 				Iterator<Node> it = nodes.iterator();
 				while(it.hasNext()) {
