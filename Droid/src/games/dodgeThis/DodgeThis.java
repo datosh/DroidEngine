@@ -12,7 +12,6 @@ import java.util.Random;
 
 import javax.swing.Timer;
 
-import ai.MoveTo;
 import ai.Repeat;
 import ai.Wander;
 import physics.collision.ColliderBox;
@@ -51,7 +50,7 @@ public class DodgeThis extends Game {
 		
 		/* INIT SPACE FOR ENEMYS AND INITIAL ENEMY */
 		enemys = new ArrayList<Enemy>(25);
-		speed = 125;
+		speed = 12;
 		addEnemy();
 		
 		/* INIT SPACE FOR POWER UPS */
@@ -107,7 +106,7 @@ public class DodgeThis extends Game {
 
 	@Override
 	public void tick(long delta) {
-		// TODO Auto-generated method stub
+		// If game is already over do not update anymore
 		if(state.equals(STATE.GAMEOVER)) return;
 		
 		played += delta;
@@ -182,7 +181,7 @@ public class DodgeThis extends Game {
 		player.draw(g);
 		
 		if(bomb != null) {
-			bomb.getCollider().draw(g);
+			bomb.draw(g);
 		}
 		
 		Iterator<PowerUp> itp = powerUps.iterator();
@@ -200,12 +199,14 @@ public class DodgeThis extends Game {
 		String scoreboard = "You have survived for " + (int)(played / 1_000_000) + " seconds!";
 		g.drawString(scoreboard, getWidth() / 5, 20);
 		
+		//If the game is marked gameover, draw one last time and then exit
 		if(state.equals(STATE.GAMEOVER)) {
 			String gameOverMsg = "YOU COLLIDED! GAME OVER!";
 			g.setColor(Color.RED);
 			g.setFont(new Font("Comic Sans", Font.BOLD, 24));
 			g.drawString(gameOverMsg, getWidth()/2 - gameOverMsg.length()/2*12, getHeight()/2);
 			this.stop();
+			return;
 		}
 	}
 
@@ -223,7 +224,7 @@ public class DodgeThis extends Game {
 	
 	private void addEnemy() {
 		Enemy enemy = new Enemy(random.nextInt(this.getWidth()), random.nextInt(this.getHeight()));
-		enemy.setCollider(new ColliderBox(0, 0, 15, 20, enemy));
+		enemy.setCollider(new ColliderBox(0, 0, 50, 50, enemy));
 		enemy.setRoutine(new Repeat(new Wander(new Point(0, 0), new Point(this.getWidth(), this.getHeight()))));
 		enemy.setRigidbody(new EnemyRigidbody(null, enemy));
 		enemys.add(enemy);
@@ -231,7 +232,7 @@ public class DodgeThis extends Game {
 	
 	private void addPowerUp() {
 		PowerUp pu = new PowerUp(random.nextInt(this.getWidth()), random.nextInt(this.getHeight()));
-		pu.setCollider(new ColliderBox(random.nextInt(this.getWidth()), random.nextInt(this.getHeight()), 20, 25, pu));
+		pu.setCollider(new ColliderBox(random.nextInt(this.getWidth()), random.nextInt(this.getHeight()), 25, 25, pu));
 		pu.getCollider().setColor(Color.PINK);
 		powerUps.add(pu);
 	}
@@ -241,5 +242,4 @@ public class DodgeThis extends Game {
 		bomb.setCollider(new ColliderBox(random.nextInt(this.getWidth()), random.nextInt(this.getHeight()), 25, 25, bomb));
 		bomb.getCollider().setColor(Color.RED);
 	}
-
 }

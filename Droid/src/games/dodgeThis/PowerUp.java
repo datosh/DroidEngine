@@ -1,6 +1,7 @@
 package games.dodgeThis;
 
 import entities.GameObject;
+import gfx.render.SpriteLoader;
 
 public class PowerUp extends GameObject {
 	private long duration;
@@ -10,6 +11,7 @@ public class PowerUp extends GameObject {
 		this.y = y;
 		this.alive = true;
 		duration = 6_000_000; // 6 seconds
+		sprite = SpriteLoader.get().getSprite("assets/dodge_this/shield.png");
 	}
 	
 	@Override

@@ -10,6 +10,4 @@ public class Enemy extends GameObject {
 		this.alive = true;
 		sprite = SpriteLoader.get().getSprite("assets/dodge_this/enemy.png");
 	}
-	
-	
 }
