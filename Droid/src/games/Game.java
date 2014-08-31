@@ -13,7 +13,7 @@ import javax.swing.JFrame;
 public abstract class Game extends Canvas implements Runnable {
 	private static final long serialVersionUID = -5926662799507913257L;
 
-	public final static boolean DEBUG = true;
+	public final boolean DEBUG = true;
 	
 	public static final InputHandler INPUT = new InputHandler();
 	public enum STATE {

@@ -17,11 +17,12 @@ import ai.Wander;
 import physics.collision.ColliderBox;
 import util.Point;
 import games.Game;
+import gfx.animation.Animator;
 
 public class DodgeThis extends Game {
 	private static final long serialVersionUID = -3973103538665918880L;
 	
-	private Player player;
+	private DodgePlayer player;
 	private List<Enemy> enemys;
 	private List<PowerUp> powerUps;
 	private Bomb bomb;
@@ -42,15 +43,17 @@ public class DodgeThis extends Game {
 	@Override
 	public void init() {
 		/* INIT PLAYER OBJECT */
-		player = new Player(200, 260);
+		player = new DodgePlayer(this, INPUT, 200, 300);
 		player.setCollider(new ColliderBox(0, 0, 50, 25, player));
 		player.setRigidbody(new PlayerRigidbody(INPUT, player));
 		player.getRigidbody().setSpeed(220);
-		player.setGame(this);
+		String[] playerLocs = {"assets/dodge_this/player.png"};
+		long[] playerDelays = {1_000_000};
+		player.setAnimator(new Animator(player, playerLocs, playerDelays));
 		
 		/* INIT SPACE FOR ENEMYS AND INITIAL ENEMY */
 		enemys = new ArrayList<Enemy>(25);
-		speed = 12;
+		speed = 125;
 		addEnemy();
 		
 		/* INIT SPACE FOR POWER UPS */
@@ -223,23 +226,32 @@ public class DodgeThis extends Game {
 	}
 	
 	private void addEnemy() {
-		Enemy enemy = new Enemy(random.nextInt(this.getWidth()), random.nextInt(this.getHeight()));
+		Enemy enemy = new Enemy(this, random.nextInt(this.getWidth()), random.nextInt(this.getHeight()));
 		enemy.setCollider(new ColliderBox(0, 0, 50, 50, enemy));
 		enemy.setRoutine(new Repeat(new Wander(new Point(0, 0), new Point(this.getWidth(), this.getHeight()))));
 		enemy.setRigidbody(new EnemyRigidbody(null, enemy));
+		String[] locs = {"assets/dodge_this/enemy.png", "assets/dodge_this/bomb.png", "assets/dodge_this/shield.png"};
+		long[] delays = {1_000_000, 1_000_000, 1_000_000};
+		enemy.setAnimator(new Animator(enemy, locs, delays));
 		enemys.add(enemy);
 	}
 	
 	private void addPowerUp() {
-		PowerUp pu = new PowerUp(random.nextInt(this.getWidth()), random.nextInt(this.getHeight()));
+		PowerUp pu = new PowerUp(this, random.nextInt(this.getWidth()), random.nextInt(this.getHeight()));
 		pu.setCollider(new ColliderBox(random.nextInt(this.getWidth()), random.nextInt(this.getHeight()), 25, 25, pu));
 		pu.getCollider().setColor(Color.PINK);
+		String[] locs = {"assets/dodge_this/shield.png"};
+		long[] delays = {1_000_000};
+		pu.setAnimator(new Animator(pu, locs, delays));
 		powerUps.add(pu);
 	}
 
 	private void createBomb() {
-		bomb = new Bomb(random.nextInt(this.getWidth()), random.nextInt(this.getHeight()));
+		bomb = new Bomb(this, random.nextInt(this.getWidth()), random.nextInt(this.getHeight()));
 		bomb.setCollider(new ColliderBox(random.nextInt(this.getWidth()), random.nextInt(this.getHeight()), 25, 25, bomb));
 		bomb.getCollider().setColor(Color.RED);
+		String[] locs = {"assets/dodge_this/bomb.png"};
+		long[] delays = {1_000_000};
+		bomb.setAnimator(new Animator(bomb, locs, delays));
 	}
 }

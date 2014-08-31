@@ -1,5 +1,7 @@
 package games.dodgeThis;
 
+import input.InputHandler;
+
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,17 +9,18 @@ import java.awt.event.ActionListener;
 import javax.swing.Timer;
 
 import entities.GameObject;
+import entities.Player;
+import games.Game;
+import gfx.render.Sprite;
 import gfx.render.SpriteLoader;
 
-public class Player extends GameObject {
+public class DodgePlayer extends Player {
 	private Timer immunityTimer;
 	private boolean immune;
 
-	public Player() {
-		this(0, 0);
-	}
-	
-	public Player(double x, double y) {
+
+	public DodgePlayer(Game game, InputHandler input, double x, double y) {
+		super(game, input);
 		this.x = x;
 		this.y = y;
 		alive = true;
@@ -32,8 +35,6 @@ public class Player extends GameObject {
 		};
 		immunityTimer = new Timer(500, immunityRemover);
 		immunityTimer.setRepeats(false);
-		
-		sprite = SpriteLoader.get().getSprite("assets/dodge_this/player.png");
 	}
 	
 	public boolean isImmune() {
