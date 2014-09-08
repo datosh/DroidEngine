@@ -9,25 +9,28 @@ import util.Point;
 public abstract class Collider {
 	protected Color color = Color.GREEN;
 	protected double offX, offY;
-	protected double x, y;
 	protected GameObject attachedTo;
 	
-	public double getX() {
-		return x;
+	public double getOffX() {
+		return offX;
 	}
 	
-	public double getY() {
-		return y;
+	public double getOffY() {
+		return offY;
 	}
 	
-	public void setPosition(Point p) {
-		this.x = p.getX();
-		this.y = p.getY();
+	public Point getOffset() {
+		return new Point(offX, offY);
 	}
 	
-	public void setPosition(double x, double y) {
-		this.x = x;
-		this.y = y;
+	public void setOffset(Point p) {
+		this.offX = p.getX();
+		this.offY = p.getY();
+	}
+	
+	public void setOffset(double x, double y) {
+		this.offX = x;
+		this.offY = y;
 	}
 	
 	public void setColor(Color color) {

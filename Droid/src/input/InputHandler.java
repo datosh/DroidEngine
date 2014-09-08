@@ -11,7 +11,7 @@ public class InputHandler implements KeyListener, MouseListener {
 	public boolean _Q, _W, _E, _R, _T, _Z, _U, _I, _O, _P;
 	public boolean _A, _S, _D, _F, _G, _H, _J, _K, _L;
 	public boolean _Y, _X, _C, _V, _B, _N, _M; 
-	public boolean _SHIFT, _ALT, _CTRL, _TAB;
+	public boolean _SHIFT, _ALT, _CTRL, _TAB, _SPACE;
 	
 	private boolean mouseHandeled = true;
 	private int mouseX, mouseY;
@@ -114,6 +114,9 @@ public class InputHandler implements KeyListener, MouseListener {
 		case KeyEvent.VK_TAB:
 			_TAB = true;
 			break;
+		case KeyEvent.VK_SPACE:
+			_SPACE = true;
+			break;
 		default:
 			break;
 		}
@@ -215,6 +218,9 @@ public class InputHandler implements KeyListener, MouseListener {
 			break;
 		case KeyEvent.VK_TAB:
 			_TAB = false;
+			break;
+		case KeyEvent.VK_SPACE:
+			_SPACE = false;
 			break;
 		default:
 			break;

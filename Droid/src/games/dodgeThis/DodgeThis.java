@@ -128,7 +128,6 @@ public class DodgeThis extends Game {
 					other = !other;
 					if(other) {
 						it.remove();
-						continue;
 					}
 				}
 				
@@ -238,7 +237,7 @@ public class DodgeThis extends Game {
 	
 	private void addPowerUp() {
 		PowerUp pu = new PowerUp(this, random.nextInt(this.getWidth()), random.nextInt(this.getHeight()));
-		pu.setCollider(new ColliderBox(random.nextInt(this.getWidth()), random.nextInt(this.getHeight()), 25, 25, pu));
+		pu.setCollider(new ColliderBox(0, 0, 25, 25, pu));
 		pu.getCollider().setColor(Color.PINK);
 		String[] locs = {"assets/dodge_this/shield.png"};
 		long[] delays = {1_000_000};
@@ -248,7 +247,7 @@ public class DodgeThis extends Game {
 
 	private void createBomb() {
 		bomb = new Bomb(this, random.nextInt(this.getWidth()), random.nextInt(this.getHeight()));
-		bomb.setCollider(new ColliderBox(random.nextInt(this.getWidth()), random.nextInt(this.getHeight()), 25, 25, bomb));
+		bomb.setCollider(new ColliderBox(0, 0, 25, 25, bomb));
 		bomb.getCollider().setColor(Color.RED);
 		String[] locs = {"assets/dodge_this/bomb.png"};
 		long[] delays = {1_000_000};

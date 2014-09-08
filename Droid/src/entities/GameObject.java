@@ -31,6 +31,7 @@ public abstract class GameObject {
 	public GameObject(Game game) {
 		this.game = game;
 		this.state = STATE.DEFAULT;
+		this.alive = true;
 	}
 	
 	/*
