@@ -14,12 +14,16 @@ public class Animator {
 	STATE lastState;
 	
 	public Animator(GameObject attachtedTo, String[] locs, long[] delays) {
+		this(attachtedTo, locs, delays, -1, -1);
+	}
+	
+	public Animator(GameObject attachtedTo, String[] locs, long[] delays, int width, int height) {
 		this.attachedTo = attachtedTo;
 		animations = new HashMap<STATE, Animation>(5);
 		active = null;
 		
 		/* A DEFAULT ANIMATION HAS ALWAYS HAVE TO BE SET */
-		animations.put(STATE.DEFAULT, new Animation(locs, delays, STATE.DEFAULT));
+		animations.put(STATE.DEFAULT, new Animation(locs, delays, STATE.DEFAULT, width, height));
 		active = animations.get(STATE.DEFAULT);
 		lastState = STATE.DEFAULT;
 	}
@@ -60,6 +64,8 @@ public class Animator {
 	}
 	
 	public void draw(int x, int y, Graphics g) {
-		active.getSprite().draw(x, y, g);
+		if(active.getSprite() != null) {
+			active.getSprite().draw(x, y, g);
+		}
 	}
 }

@@ -36,23 +36,22 @@ public class PlayerRigidbody extends Rigidbody {
 				attachedTo.setX(attachedTo.getGame().getWidth() - width - offX);
 			}
 		}
-		if(inputHandler._W) {
-			double destY = attachedTo.getY() - speed * (double)delta / 1_000_000;
-			if(destY + offY > 0) {
-				attachedTo.setY(destY);	
-			} else {
-				attachedTo.setY(0 - offY);
-			}
-		}
-		if(inputHandler._S) {
-			double destY = attachedTo.getY() + speed * (double)delta / 1_000_000;
-			if(destY + offY + height < attachedTo.getGame().getHeight()) {
-				attachedTo.setY(destY);
-			} else {
-				attachedTo.setY(attachedTo.getGame().getHeight() - height - offY);
-			}
-			
-		}
+//		if(inputHandler._W) {
+//			double destY = attachedTo.getY() - speed * (double)delta / 1_000_000;
+//			if(destY + offY > 0) {
+//				attachedTo.setY(destY);	
+//			} else {
+//				attachedTo.setY(0 - offY);
+//			}
+//		}
+//		if(inputHandler._S) {
+//			double destY = attachedTo.getY() + speed * (double)delta / 1_000_000;
+//			if(destY + offY + height < attachedTo.getGame().getHeight()) {
+//				attachedTo.setY(destY);
+//			} else {
+//				attachedTo.setY(attachedTo.getGame().getHeight() - height - offY);
+//			}
+//		}
 	}
 	
 }

@@ -158,8 +158,8 @@ public class SpaceInvaders extends Game {
 		enemy.setPosition(new Point(x, y));
 		String[] locs = {"assets/space_invaders/enemy_1.png", "assets/space_invaders/enemy_2.png"};
 		long[] delays = {500_000, 500_000};
-		enemy.setAnimator(new Animator(enemy, locs, delays));
-		enemy.setCollider(new ColliderBox(0, 0, 128, 128, enemy));
+		enemy.setAnimator(new Animator(enemy, locs, delays, 64, 64));
+		enemy.setCollider(new ColliderBox(0, 0, 64, 64, enemy));
 		enemys.add(enemy);
 	}
 	

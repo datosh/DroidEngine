@@ -7,6 +7,7 @@ import gfx.render.SpriteLoader;
 public class Animation {
 	String[] locs;
 	long[] delays;
+	int width, height;
 	int length;
 	STATE state;
 	long timePassed;
@@ -14,6 +15,10 @@ public class Animation {
 	Sprite currentSprite;
 	
 	public Animation(String[] locs, long[] delays, STATE state) {
+		this(locs, delays, state, -1, -1);
+	}
+	
+	public Animation(String[] locs, long[] delays, STATE state, int width, int height) {
 		if(locs.length != delays.length) {
 			System.err.println("Location and Delay-Arrays have different length!");
 		}
@@ -27,6 +32,10 @@ public class Animation {
 		for(long i : delays) {
 			timeTotal += i;
 		}
+		
+		/* Scaled width and height of the Sprite that has to be loaded */
+		this.width = width;
+		this.height = height;
 	}
 	
 	public void reset() {
@@ -48,7 +57,7 @@ public class Animation {
 		for(int i = 0; i < delays.length; i++) {
 			delaySums += delays[i];
 			if(timePassed < delaySums) {
-				currentSprite = SpriteLoader.get().getSprite(locs[i]);
+				currentSprite = SpriteLoader.get().getSprite(locs[i], width, height);
 				return;
 			}
 		}

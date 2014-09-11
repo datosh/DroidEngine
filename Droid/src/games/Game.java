@@ -7,8 +7,12 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.image.BufferStrategy;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.swing.JFrame;
+
+import entities.GameObject;
 
 public abstract class Game extends Canvas implements Runnable {
 	private static final long serialVersionUID = -5926662799507913257L;
@@ -31,6 +35,8 @@ public abstract class Game extends Canvas implements Runnable {
 	
 	private boolean running = false;
 	private JFrame frame;
+	
+	protected List<GameObject> obstacles;
 	
 	public Game(String name) {
 		this(name, 512);
@@ -64,6 +70,12 @@ public abstract class Game extends Canvas implements Runnable {
 		
 		//Input will instantly go to us
 		this.requestFocus();
+		
+		obstacles = new ArrayList<GameObject>(25);
+	}
+	
+	public List<GameObject> getObstacles() {
+		return obstacles;
 	}
 	
 	public boolean isRunning() {
